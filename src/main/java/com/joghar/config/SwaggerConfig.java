@@ -25,10 +25,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig{
 	private ApiInfo apiInfo() {
-		Contact contact = new Contact("Deltafixes", "", "");
+		Contact contact = new Contact("Hardik Jogani", "https://joghar.github.io", "joganihardik57@gmail.com");
 		return new ApiInfoBuilder()
 				.title("Spring Security Frame")
 				.contact(contact)
+				.description("This is basic frame project of spring boot with security.")
 				.version("1.0").build();
 	}
 	
@@ -46,8 +47,7 @@ public class SwaggerConfig{
 	}
 
 	private SecurityContext securityContext() {
-		return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.any())
-				.build();
+		return SecurityContext.builder().securityReferences(defaultAuth()).build();
 	}
 
 	private List<SecurityReference> defaultAuth() {
