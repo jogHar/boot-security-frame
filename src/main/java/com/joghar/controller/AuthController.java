@@ -14,9 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joghar.model.Role;
@@ -31,8 +31,12 @@ import com.joghar.repository.UserRepository;
 import com.joghar.security.config.JwtUtils;
 import com.joghar.security.service.UserDetailsImpl;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/auth")
+@Api(tags = "Auth", value = "Auth Controller")
 public class AuthController {
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -49,8 +53,9 @@ public class AuthController {
 	@Autowired
 	JwtUtils jwtUtils;
 	
-	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	@ApiOperation(value = "Sign In", response = JwtResponse.class)
+	@RequestMapping(value = "/signin", method = RequestMethod.POST, produces = { "application/json" })
+	public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -70,8 +75,9 @@ public class AuthController {
 												 roles));
 	}
 	
-	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+	@ApiOperation(value = "Sign Up", response = MessageResponse.class)
+	@RequestMapping(value = "/signup", method = RequestMethod.POST, produces = { "application/json" })
+	public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
