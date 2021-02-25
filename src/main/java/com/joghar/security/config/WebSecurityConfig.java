@@ -52,11 +52,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.authorizeRequests().antMatchers("/api/public/**").permitAll()
-			.antMatchers("/api/test/**").permitAll()
-			.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
-					"/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui",
-					"/swagger-resources/configuration/security","/secured/**", "/secured/**/**","/v2/api-docs.yaml").permitAll()
+			.authorizeRequests()
+			.antMatchers("/api/public/**").permitAll()
+			.antMatchers("/api/auth/**").permitAll()
+			.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources",
+					"/configuration/security", "/swagger-ui.html", "/webjars/**",
+					"/swagger-resources/configuration/ui", "/swagger-resources/configuration/security",
+					"/secured/**", "/secured/**/**","/v2/api-docs.yaml").permitAll()
 			.anyRequest().authenticated();
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
