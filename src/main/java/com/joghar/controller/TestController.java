@@ -13,12 +13,6 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "Test", value = "Test Controller")
 public class TestController {
 	
-	@ApiOperation(value = "All access")
-	@GetMapping("/all")
-	public String allAccess() {
-		return "Public Content.";
-	}
-	
 	@ApiOperation(value = "User access")
 	@GetMapping("/user")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
